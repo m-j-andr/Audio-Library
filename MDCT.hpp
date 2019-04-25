@@ -23,7 +23,7 @@
  Another, is that we can store values which we will reuse for every block.
  
  The constructors for the functors calculate:
-    . a lookup table for the bit-reversal permutation that the FIFFT uses;
+    . a lookup table for the bit-reversal permutation that the IFFT uses;
     . appropriate "twiddle values"; and
     . in both cases, N is intended to be the window size.
  
@@ -33,7 +33,7 @@
 struct MDCT : m2mForVectorize {
     mono function(const mono& t);
     
-    MDCT(size_t N) : indices(reverseBits(N)), twiddle1(roots_of_unity(N)) {
+    MDCT(size_t N) : orbits(orbitsOfSize2(N)), twiddle1(roots_of_unity(N)) {
         
         const size_t halfN = N/2;
         twiddle2.reserve(halfN);
@@ -48,14 +48,14 @@ struct MDCT : m2mForVectorize {
         }
     }
 private:
-    std::vector<size_t> indices;
+    std::vector<size_t> orbits;
     std::vector<cmplx> twiddle1, twiddle2;
 };
 
 struct IMDCT : m2mForVectorize {
     mono function(const mono& f);
     
-    IMDCT(size_t N) : indices(reverseBits(N)), roots(roots_of_unity(N/2)) {
+    IMDCT(size_t N) : orbits(orbitsOfSize2(N)), roots(roots_of_unity(N/2)) {
         
         twiddle1.reserve(N);
         twiddle2.reserve(N);
@@ -71,7 +71,7 @@ struct IMDCT : m2mForVectorize {
         }
     }
 private:
-    std::vector<size_t> indices;
+    std::vector<size_t> orbits;
     std::vector<cmplx> roots, twiddle1, twiddle2;
 };
 

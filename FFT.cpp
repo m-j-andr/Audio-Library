@@ -21,10 +21,6 @@ std::vector<cmplx> FFT(const std::vector<cmplx>& t) {
     norm(f);
     return f;
 }
-std::vector<cmplx> IFFT(const std::vector<cmplx>& f) {
-    std::vector<cmplx> roots = roots_of_unity(f.size()/2);
-    return FIFFT(f, roots);
-}
 std::vector<cmplx> IFFT(const std::vector<cmplx>& f,
                         const std::vector<cmplx>& roots_of_unity) {
     
@@ -58,24 +54,22 @@ std::vector<cmplx> IFFT(const std::vector<cmplx>& f,
     return t;
 }
 
-
-std::vector<cmplx> FIFFT(const std::vector<cmplx>& f,
-                         const std::vector<cmplx>& r) {
-    
+std::vector<cmplx> IFFT(const std::vector<cmplx>& f) {
     const size_t N = f.size();
+    const std::vector<cmplx> r = roots_of_unity(N/2);
     const std::vector<size_t> i = reverseBits(N);
-    return FIFFT(f, r, i);
+    return IFFT(f, r, i);
 }
-std::vector<cmplx> FIFFT(const std::vector<cmplx>& f,
-                         const std::vector<cmplx>& r,
-                         const std::vector<size_t>& i) {
+std::vector<cmplx> IFFT(const std::vector<cmplx>& f,
+                        const std::vector<cmplx>& r,
+                        const std::vector<size_t>& i) {
     
     // Make a copy of f with the indices permuted via bit-reversal.
     const size_t N = f.size();
     std::vector<cmplx> t; t.reserve(N);
     for (size_t k=0; k<N; ++k) { t.push_back( f[i[k]] ); }
     
-    // Perform the IFFT non-recursively and almost in-place.
+    // Perform the rest of the IFFT non-recursively and in-place.
     for (size_t m=2, d=r.size(); m<=N; m*=2, d/=2) {
         for (size_t k=0; k<N; k+=m) {
             for (size_t j=0, M=m/2; j<M; ++j) {
@@ -88,6 +82,28 @@ std::vector<cmplx> FIFFT(const std::vector<cmplx>& f,
         }
     }
     return t;
+}
+void inPlaceIFFT(std::vector<cmplx>& f,
+                 const std::vector<cmplx>& r,
+                 const std::vector<size_t>& o) {
+    
+    // Permute the indices of f via bit-reversal.
+    for (size_t k=0, N=o.size()/2; k<N; ++k) {
+        std::swap(f[o[2*k]], f[o[2*k+1]]);
+    }
+    
+    // Perform the rest of the IFFT non-recursively and in-place.
+    for (size_t m=2, d=r.size(), N=f.size(); m<=N; m*=2, d/=2) {
+        for (size_t k=0; k<N; k+=m) {
+            for (size_t j=0, M=m/2; j<M; ++j) {
+                cmplx a = f[k  +j];
+                cmplx b = f[k+M+j] * r[d*j];
+                
+                f[k  +j] = a+b;
+                f[k+M+j] = a-b;
+            }
+        }
+    }
 }
 
 size_t reverseBits(size_t k, size_t bits) {
@@ -105,7 +121,22 @@ std::vector<size_t> reverseBits(size_t N) {
     for (size_t k=0; k<N; ++k) { rev.push_back( reverseBits(k,bits) ); }
     return rev;
 }
-
+std::vector<size_t> orbitsOfSize2(size_t N) {
+    const std::vector<size_t> perm = reverseBits(N);
+    
+    std::vector<size_t> orbits;
+    std::set<size_t> accountedFor;
+    
+    for (size_t k=0; k<N; ++k) {
+        if (!accountedFor.count(k) && k != perm[k]) {
+            orbits.push_back(     k );
+            orbits.push_back(perm[k]);
+        }
+        accountedFor.insert(     k );
+        accountedFor.insert(perm[k]);
+    }
+    return orbits;
+}
 
 // Easy functions
 std::vector<cmplx> complexify(const std::vector<double>& t) {
