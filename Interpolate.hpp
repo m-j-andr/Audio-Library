@@ -10,7 +10,7 @@
 #define interpolate_hpp
 
 #include "DataStructures.hpp"
-#include <cmath>
+#include <cmath>    // sin, acos
 
 /*
  interpolatedValue returns

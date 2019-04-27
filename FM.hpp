@@ -9,7 +9,7 @@
 #ifndef FM_hpp
 #define FM_hpp
 
-#include <cmath>
+#include <cmath>    // sin, atan
 
 /*
  The FMfunction class allows us to read through the values of "func",
@@ -102,4 +102,6 @@ private:
 
 
 double mySine(double x);
+double mySquare(double x);
+
 #endif /* FM_hpp */

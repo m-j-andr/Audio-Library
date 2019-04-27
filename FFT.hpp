@@ -9,10 +9,11 @@
 #ifndef FFT_hpp
 #define FFT_hpp
 
+#include <cassert>
+#include <cmath>    // pow, log2
 #include <complex>
 #include <vector>
-#include <cmath>
-#include <utility>
+#include <utility>  // std::swap
 #include <set>
 
 /*

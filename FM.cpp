@@ -61,3 +61,8 @@ double twiceFM::getVal() const { return func.val; }
 
 
 double mySine(double x) { return sin( (8 * atan(1.0)) * x ); }
+double mySquare(double x) {
+    if (0   < x && x < 0.5) { return  1; }
+    if (0.5 < x && x < 1.0) { return -1; }
+    else                    { return  0; }
+}

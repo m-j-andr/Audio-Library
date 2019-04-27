@@ -10,8 +10,9 @@
 #define LosePrecision_hpp
 
 #include <iostream>
+#include <cassert>
+#include <cmath>    // pow
 #include <vector>
-#include <cmath>
 
 /*
  reconstructDouble demonstrates how doubles are stored internally.

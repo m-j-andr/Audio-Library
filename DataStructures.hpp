@@ -9,7 +9,12 @@
 #ifndef DataStructures_hpp
 #define DataStructures_hpp
 
+#include <cassert>
 #include <vector>
+
+#ifdef _OPENMP
+#include <omp.h> // multithreading on blocks
+#endif
 
 /*
  The first data structures are suited for storing:

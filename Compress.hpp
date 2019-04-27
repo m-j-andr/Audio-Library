@@ -11,7 +11,7 @@
 
 #include "DataStructures.hpp"
 #include "LosePrecision.hpp"
-#include <algorithm>
+#include <algorithm>        // std::max
 
 /*
  All of these functions are intended to be applied to

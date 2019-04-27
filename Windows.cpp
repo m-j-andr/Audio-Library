@@ -11,14 +11,14 @@
 std::vector<double> sine(size_t N) {
     std::vector<double> w(N);
     for (size_t n=0; n<N; ++n) {
-        w[n] = sin(std::acos(-1) * (n + 0.5) / N);
+        w[n] = sin(acos(-1) * (n + 0.5) / N);
     }
     return w;
 }
 std::vector<double> Hann(size_t N) {
     std::vector<double> w(N);
     for (size_t n=0; n<N; ++n) {
-        w[n] = 0.5 - 0.5 * cos( 2 * std::acos(-1) * (n + 0.5) / N );
+        w[n] = 0.5 - 0.5 * cos( 2 * acos(-1) * (n + 0.5) / N );
     }
     return w;
 }

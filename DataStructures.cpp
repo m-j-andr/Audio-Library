@@ -45,10 +45,34 @@ void mInPlaceForVectorize::operator() (stereoBlocks& v) {
     operator()(v.l); operator()(v.r);
 }
 
+
 monoBlocks m2mForVectorize::operator() (monoBlocks v) {
-    for (size_t i=0, N=v.size(); i<N; ++i) { v[i] = operator()(v[i]); }
+    size_t i;
+    const size_t N=v.size();
+    
+#ifdef _OPENMP
+    #pragma omp parallel shared(v) private(i)
+    #pragma omp for schedule(static)
+    for (i=0; i<N; ++i) { v[i] = operator()(v[i]); }
+
+#else
+    for (i=0; i<N; ++i) { v[i] = operator()(v[i]); }
+
+#endif
     return v;
 }
+
 void mInPlaceForVectorize::operator() (monoBlocks& v) {
-    for (size_t i=0, N=v.size(); i<N; ++i) {        operator()(v[i]); }
+    size_t i;
+    const size_t N=v.size();
+
+#ifdef _OPENMP
+    #pragma omp parallel shared(v) private(i)
+    #pragma omp for schedule(static)
+    for (i=0; i<N; ++i) { operator()(v[i]); }
+
+#else
+    for (i=0; i<N; ++i) { operator()(v[i]); }
+    
+#endif
 }

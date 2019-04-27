@@ -17,7 +17,7 @@ void loseBits::function(mono& f) {
 void compressRel::function(mono& f) {
     double maxAbs = 0;
     for(size_t k=0, N=f.size(); k<N; ++k) {
-        maxAbs = std::max(maxAbs, std::abs(f[k]));
+        maxAbs = std::max(maxAbs, abs(f[k]));
     }
     double cutoffLower  = thresholdLower  * maxAbs;
     double cutoffHigher = thresholdHigher * maxAbs;

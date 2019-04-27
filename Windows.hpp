@@ -9,8 +9,9 @@
 #ifndef Windows_hpp
 #define Windows_hpp
 
+#include <cassert>
+#include <cmath>    // sin, acos
 #include <vector>
-#include <cmath>
 
 /*
  The derive function makes sure that "the window overlap condition" is met.

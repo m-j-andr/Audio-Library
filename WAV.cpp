@@ -83,7 +83,13 @@ void write(std::string fileName, const mono& signal, uint32_t sample_rate) {
     write(fout, header.fmt_header , header.footer);
     
     const size_t N = signal.size();
+    
+    #ifdef _BOOST
     std::vector<boost::float32_t> v; v.reserve(N+1);
+    #else
+    std::vector<float> v; v.reserve(N+1);
+    #endif
+    
     for (const double& val:signal) { v.push_back(val); } v.push_back(0);
     write(fout, v[0], v[N]);
     
@@ -98,7 +104,13 @@ void write(std::string fileName, const stereo& signal, uint32_t sample_rate) {
     write(fout, header.fmt_header , header.footer);
     
     const size_t N = signal.size();
+    
+    #ifdef _BOOST
     std::vector<boost::float32_t> v; v.reserve(2*N+1);
+    #else
+    std::vector<float> v; v.reserve(2*N+1);
+    #endif
+    
     for (size_t i=0; i<N; i++) {
         v.push_back(signal.l[i]);
         v.push_back(signal.r[i]);
@@ -226,8 +238,15 @@ mono read_m(std::string fileName) {
     }
     if (header.audio_fmt == 3 && header.bit_depth_of_sample == 32) {
         for (double& val:forReturn) {
+            
+            #ifdef _BOOST
             boost::float32_t data;
             fin.read(reinterpret_cast <char*> (&data), sizeof(boost::float32_t));
+            #else
+            float data;
+            fin.read(reinterpret_cast <char*> (&data), sizeof(float));
+            #endif
+            
             val = data;
         }
     }
@@ -258,9 +277,17 @@ stereo read_s(std::string fileName) {
     }
     if (header.audio_fmt == 3 && header.bit_depth_of_sample == 32) {
       for (size_t i=0; i<N; ++i) {
+          
+        #ifdef _BOOST
         boost::float32_t data;
         fin.read(reinterpret_cast<char*>(&data), sizeof(boost::float32_t)); l[i] = data;
         fin.read(reinterpret_cast<char*>(&data), sizeof(boost::float32_t)); r[i] = data;
+        #else
+        float data;
+        fin.read(reinterpret_cast<char*>(&data), sizeof(float)); l[i] = data;
+        fin.read(reinterpret_cast<char*>(&data), sizeof(float)); r[i] = data;
+        #endif
+          
       }
     }
     fin.close();

@@ -9,10 +9,10 @@
 #ifndef WAV_hpp
 #define WAV_hpp
 
-#include <iostream>
+#include <ostream>
 #include <string>
 #include <vector>
-#include <cmath>
+#include <cmath>    // pow
 
 /*
  We make functions to enable reading and writing WAV files.
@@ -32,8 +32,12 @@
  To deal with 32-bit floats we include <boost/cstdfloat.hpp>.
 */
 
-#include <cstdint>
-#include <boost/cstdfloat.hpp>
+#include <cstdint>                  // uint8_t, uint16_t, uint32_t
+
+#ifdef _BOOST
+#include <boost/cstdfloat.hpp>      // float32_t
+#endif
+
 #include <fstream>
 #include "DataStructures.hpp"
 
