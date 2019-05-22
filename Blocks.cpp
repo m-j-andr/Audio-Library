@@ -63,3 +63,7 @@ void multiply_by_window::function(mono& v) {
     // assert (v.size() == window.size());
     for (size_t n=0, N=v.size(); n<N; ++n) { v[n] *= window[n]; }
 }
+
+void amplify::function(mono& v) {
+    for (size_t n=0, N=v.size(); n<N; ++n) { v[n] *= amplification; }
+}

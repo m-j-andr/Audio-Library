@@ -45,10 +45,3 @@ struct granularStretch : m2mForVectorize {
                                            oneShiftUnchop(oneShiftUnchop),
                                            window(window) {}
 };
-
-struct amplify : mInPlaceForVectorize {
-    void function(mono& v);
-    double amplification;
-    
-    amplify(double amplification) : amplification(amplification) {}
-};

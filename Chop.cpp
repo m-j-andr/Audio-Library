@@ -52,7 +52,3 @@ mono granularStretch::function(const mono &v) {
     mono unchopped = unchop(oneShiftUnchop)(chopped);
     return unchopped;
 }
-
-void amplify::function(mono& v) {
-    for (size_t n=0, N=v.size(); n<N; ++n) { v[n] *= amplification; }
-}

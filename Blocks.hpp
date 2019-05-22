@@ -40,4 +40,11 @@ struct multiply_by_window : mInPlaceForVectorize {
     multiply_by_window(const mono& window) : window(window) {}
 };
 
+struct amplify : mInPlaceForVectorize {
+    void function(mono& v);
+    double amplification;
+    
+    amplify(double amplification) : amplification(amplification) {}
+};
+
 #endif /* Blocks_hpp */

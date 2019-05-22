@@ -233,7 +233,7 @@ mono read_m(std::string fileName) {
             int16_t data;
             fin.read(reinterpret_cast <char*> (&data), sizeof(int16_t));
             val  = data;
-            val /= pow(2,16);
+            val /= pow(2,15);
         }
     }
     if (header.audio_fmt == 3 && header.bit_depth_of_sample == 32) {
@@ -271,8 +271,8 @@ stereo read_s(std::string fileName) {
         int16_t data;
         fin.read(reinterpret_cast<char*>(&data), sizeof(int16_t)); l[i] = data;
         fin.read(reinterpret_cast<char*>(&data), sizeof(int16_t)); r[i] = data;
-        l[i] /= pow(2,16);
-        r[i] /= pow(2,16);
+        l[i] /= pow(2,15);
+        r[i] /= pow(2,15);
       }
     }
     if (header.audio_fmt == 3 && header.bit_depth_of_sample == 32) {
